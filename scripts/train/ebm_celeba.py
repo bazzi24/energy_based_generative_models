@@ -56,9 +56,9 @@ writer = SummaryWriter(str(root))
 #################################################
 
 itr = inf_train_gen(args.batch_size)
-netG = Generator(args.z_dim, args.dim).cuda()
-netE = EnergyModel(args.dim).cuda()
-netH = StatisticsNetwork(args.z_dim, args.dim).cuda()
+netG = Generator(args.z_dim, args.dim)
+netE = EnergyModel(args.dim)
+netH = StatisticsNetwork(args.z_dim, args.dim)
 
 if load:
     print('Loading models')
@@ -95,7 +95,7 @@ for iters in range(args.iters):
         )
 
     for i in range(args.energy_model_iters):
-        x_real = itr.__next__().cuda()
+        x_real = itr.__next__()
         train_energy_model(
             x_real,
             netG, netE, optimizerE,

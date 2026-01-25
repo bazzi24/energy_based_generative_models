@@ -7,7 +7,7 @@ from torchvision.utils import make_grid
 
 def save_toy_samples(netG, args, z=None):
     if z is None:
-        z = torch.randn(args.n_points, args.z_dim).cuda()
+        z = torch.randn(args.n_points, args.z_dim)
     x_fake = netG(z).detach().cpu().numpy()
 
     fig = plt.Figure()
@@ -18,7 +18,7 @@ def save_toy_samples(netG, args, z=None):
 
 def save_samples(netG, args):
     netG.eval()
-    z = torch.randn(64, args.z_dim).cuda()
+    z = torch.randn(64, args.z_dim)
     x_fake = netG(z).detach().cpu()[:, :3]
     img = make_grid(x_fake, normalize=True)
     netG.train()
@@ -31,7 +31,7 @@ def save_energies(netE, args, n_points=500, beta=1.):
     grid = np.asarray(np.meshgrid(x, y)).transpose(1, 2, 0).reshape((-1, 2))
 
     with torch.no_grad():
-        grid = torch.from_numpy(grid).float().cuda()
+        grid = torch.from_numpy(grid).float()
         e_grid = netE(grid) * beta
 
     p_grid = F.log_softmax(-e_grid, 0).exp()

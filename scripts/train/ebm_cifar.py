@@ -53,9 +53,9 @@ writer = SummaryWriter(str(root))
 #################################################
 
 itr = inf_train_gen(args.batch_size)
-netG = Generator(args.z_dim, args.dim).cuda()
-netE = EnergyModel(args.dim).cuda()
-netH = StatisticsNetwork(args.z_dim, args.dim).cuda()
+netG = Generator(args.z_dim, args.dim)
+netE = EnergyModel(args.dim)
+netH = StatisticsNetwork(args.z_dim, args.dim)
 
 params = {"lr": 1e-4, "betas": (0.5, 0.9)}
 optimizerE = torch.optim.Adam(netE.parameters(), **params)
@@ -81,7 +81,7 @@ for iters in range(args.iters):
         train_generator(netG, netE, netH, optimizerG, optimizerH, args, g_costs)
 
     for i in range(args.energy_model_iters):
-        x_real = itr.__next__().cuda()
+        x_real = itr.__next__()
         train_energy_model(x_real, netG, netE, optimizerE, args, e_costs)
 
     _, loss_mi = np.mean(g_costs[-args.generator_iters :], 0)

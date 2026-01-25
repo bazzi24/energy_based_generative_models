@@ -57,9 +57,9 @@ writer = SummaryWriter(str(root))
 
 mc_eval = ModeCollapseEval(args.n_stack, args.z_dim)
 itr = inf_train_gen(args.batch_size, n_stack=args.n_stack)
-netG = Generator(args.n_stack, args.z_dim, args.dim).cuda()
-netE = EnergyModel(args.n_stack, args.dim).cuda()
-netH = StatisticsNetwork(args.n_stack, args.z_dim, args.dim).cuda()
+netG = Generator(args.n_stack, args.z_dim, args.dim)
+netE = EnergyModel(args.n_stack, args.dim)
+netH = StatisticsNetwork(args.n_stack, args.z_dim, args.dim)
 
 params = {"lr": 1e-4, "betas": (0.5, 0.9)}
 optimizerE = torch.optim.Adam(netE.parameters(), **params)
@@ -87,7 +87,7 @@ for iters in range(args.iters):
         train_generator(netG, netE, netH, optimizerG, optimizerH, args, g_costs)
 
     for i in range(args.energy_model_iters):
-        x_real = itr.__next__().cuda()
+        x_real = itr.__next__()
         train_energy_model(x_real, netG, netE, optimizerE, args, e_costs)
 
     _, loss_mi = np.mean(g_costs[-args.generator_iters :], 0)

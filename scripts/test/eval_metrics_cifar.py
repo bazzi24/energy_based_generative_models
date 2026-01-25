@@ -40,8 +40,8 @@ root = Path(args.load_path)
 if not Path(args.dump_path).exists():
     Path(args.dump_path).mkdir()
 
-netG = Generator(args.z_dim, args.dim).cuda()
-netE = EnergyModel(args.dim).cuda()
+netG = Generator(args.z_dim, args.dim)
+netE = EnergyModel(args.dim)
 
 netG.eval()
 netE.eval()

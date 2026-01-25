@@ -31,7 +31,7 @@ def compute_scores(testy, scores):
 
 def do_eval(netE, writer, epoch):
     testx, testy = test_set
-    data = torch.from_numpy(testx).float().cuda()
+    data = torch.from_numpy(testx).float()
     data.requires_grad_(True)
 
     energies = netE(data)
@@ -88,9 +88,9 @@ writer = SummaryWriter(str(root))
 train_set = get_train()[0]
 test_set = get_test()
 
-netG = Generator(args.z_dim).cuda()
-netE = EnergyModel().cuda()
-netH = StatisticsNetwork(args.z_dim).cuda()
+netG = Generator(args.z_dim)
+netE = EnergyModel()
+netH = StatisticsNetwork(args.z_dim)
 
 params = {"lr": 1e-4, "betas": (0.5, 0.9)}
 optimizerE = torch.optim.Adam(netE.parameters(), **params)
@@ -108,7 +108,7 @@ for epoch in range(args.epochs):
     for i in range(0, len(train_set), args.batch_size):
         steps += 1
 
-        x_real = torch.from_numpy(train_set[i : i + args.batch_size]).float().cuda()
+        x_real = torch.from_numpy(train_set[i : i + args.batch_size]).float()
 
         train_energy_model(x_real, netG, netE, optimizerE, args, e_costs)
         d_real, d_fake, penalty = e_costs[-1]

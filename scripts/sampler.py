@@ -19,14 +19,14 @@ def get_sgld_proposal(z, netG, netE, beta=1., alpha=.01):
 def MALA_sampler(netG, netE, args, z=None, return_ratio=False):
     beta = args.temp if hasattr(args, 'temp') else 1.
     if z is None:
-        z = torch.randn(args.batch_size, args.z_dim).cuda()
+        z = torch.randn(args.batch_size, args.z_dim)
 
     for i in range(args.mcmc_iters):
         e_z, del_e_z, z_prime = get_sgld_proposal(z, netG, netE, beta, args.alpha)
         e_z_prime = netE(netG(z_prime)) * beta
 
         ratio = (-e_z_prime + e_z).exp().clamp(max=1)
-        rnd_u = torch.rand(ratio.shape).cuda()
+        rnd_u = torch.rand(ratio.shape)
         mask = (rnd_u < ratio).float()[:, None]
         z = (z_prime * mask + z * (1 - mask)).detach()
 
@@ -39,7 +39,7 @@ def MALA_sampler(netG, netE, args, z=None, return_ratio=False):
 def MALA_corrected_sampler(netG, netE, args, z=None, return_ratio=False):
     beta = args.temp if hasattr(args, 'temp') else 1.
     if z is None:
-        z = torch.randn(args.batch_size, args.z_dim).cuda()
+        z = torch.randn(args.batch_size, args.z_dim)
 
     for i in range(args.mcmc_iters):
         e_z, del_e_z, z_prime = get_sgld_proposal(z, netG, netE, beta, args.alpha)
@@ -57,7 +57,7 @@ def MALA_corrected_sampler(netG, netE, args, z=None, return_ratio=False):
 
         ratio = (log_ratio_1 + log_ratio_2).exp().clamp(max=1)
         # print(ratio.mean().item())
-        rnd_u = torch.rand(ratio.shape).cuda()
+        rnd_u = torch.rand(ratio.shape)
         mask = (rnd_u < ratio).float()[:, None]
         z = (z_prime * mask + z * (1 - mask)).detach()
 

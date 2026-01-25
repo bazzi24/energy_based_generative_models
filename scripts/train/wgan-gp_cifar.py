@@ -49,8 +49,8 @@ writer = SummaryWriter(str(root))
 #################################################
 
 itr = inf_train_gen(args.batch_size)
-netG = Generator(args.z_dim, args.dim).cuda()
-netD = EnergyModel(args.dim).cuda()
+netG = Generator(args.z_dim, args.dim)
+netD = EnergyModel(args.dim)
 
 params = {'lr': 1e-4, 'betas': (0.5, 0.9)}
 optimizerD = torch.optim.Adam(netD.parameters(), **params)
@@ -79,7 +79,7 @@ for iters in range(args.iters):
     train_wgan_generator(netG, netD, optimizerG, args)
 
     for i in range(args.critic_iters):
-        x_real = itr.__next__().cuda()
+        x_real = itr.__next__()
         train_wgan_discriminator(
             x_real, netG, netD, optimizerD,
             args, d_costs

@@ -16,7 +16,7 @@ def KLD(p, q):
 
 class ModeCollapseEval(object):
     def __init__(self, n_stack, z_dim):
-        self.classifier = Net().cuda()
+        self.classifier = Net()
         self.classifier.load_state_dict(torch.load('pretrained_classifier.pt'))
         self.n_stack = n_stack
         self.n_samples = 26 * 10 ** n_stack
@@ -27,7 +27,7 @@ class ModeCollapseEval(object):
         n_batches = max(1, self.n_samples // 1000)
         for i in tqdm(range(n_batches)):
             with torch.no_grad():
-                z = torch.randn(1000, self.z_dim).cuda()
+                z = torch.randn(1000, self.z_dim)
                 x_fake = netG(z) * .5 + .5
                 x_fake = x_fake.view(-1, 1, 28, 28)
                 classes = F.softmax(self.classifier(x_fake), -1).max(1)[1]
@@ -52,7 +52,7 @@ def tf_inception_score(netG, z_dim=128, n_samples=5000):
     with torch.no_grad():
         images = []
         for i in tqdm(range(n_samples // 100)):
-            z = torch.randn(100, z_dim).cuda()
+            z = torch.randn(100, z_dim)
             x = netG(z)
             images.append(x)
 
@@ -66,7 +66,7 @@ def tf_fid(netG, save_dir='/Tmp/kumarrit/cifar_samples/', z_dim=128, n_samples=5
     with torch.no_grad():
         images = []
         for i in tqdm(range(n_samples // 100)):
-            z = torch.randn(100, z_dim).cuda()
+            z = torch.randn(100, z_dim)
             x = netG(z) * .5 + .5
             images.append(x)
 

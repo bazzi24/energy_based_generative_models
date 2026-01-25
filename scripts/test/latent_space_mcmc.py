@@ -47,8 +47,8 @@ else:
     assert False, "Incorrect dataset specification. Choose one of toy | cifar | mnist | celeba"
 
 # mod = __import__('...networks.%s' % args.dataset, fromlist=[''])
-netG = Generator(z_dim=args.z_dim, dim=args.dim).cuda()
-netE = EnergyModel(dim=args.dim).cuda()
+netG = Generator(z_dim=args.z_dim, dim=args.dim)
+netE = EnergyModel(dim=args.dim)
 
 netG.eval()
 netE.eval()
@@ -66,7 +66,7 @@ n_iters = args.mcmc_iters
 args.mcmc_iters = 1  # We want to step through 1 at a time
 
 torch.manual_seed(args.seed)
-z = torch.randn(args.batch_size, args.z_dim).cuda()
+z = torch.randn(args.batch_size, args.z_dim)
 
 timeline = []
 interval = n_iters / args.batch_size

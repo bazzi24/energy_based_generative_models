@@ -54,8 +54,8 @@ writer = SummaryWriter(str(root))
 
 mc_eval = ModeCollapseEval(args.n_stack, args.z_dim)
 itr = inf_train_gen(args.batch_size, n_stack=args.n_stack)
-netG = Generator(args.n_stack, args.z_dim, args.dim).cuda()
-netD = EnergyModel(args.n_stack, args.dim).cuda()
+netG = Generator(args.n_stack, args.z_dim, args.dim)
+netD = EnergyModel(args.n_stack, args.dim)
 
 params = {"lr": 1e-4, "betas": (0.5, 0.9)}
 optimizerD = torch.optim.Adam(netD.parameters(), **params)
@@ -77,7 +77,7 @@ for iters in range(args.iters):
     train_wgan_generator(netG, netD, optimizerG, args)
 
     for i in range(args.critic_iters):
-        x_real = itr.__next__().cuda()
+        x_real = itr.__next__()
         train_wgan_discriminator(x_real, netG, netD, optimizerD, args, d_costs)
 
     d_real, d_fake, wass_d, penalty = np.mean(d_costs[-args.critic_iters :], 0)

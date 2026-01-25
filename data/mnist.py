@@ -23,4 +23,4 @@ def inf_train_gen(batch_size, data_dir='../data/MNIST/raw', n_stack=3):
             for j in range(ids.shape[1]):
                 X_training[i, j] = mnist_X[ids[i, j], :, :, 0]
         X_training = X_training / 255.0 * 2 - 1
-        yield torch.from_numpy(X_training).float().cuda()
+        yield torch.from_numpy(X_training).float()

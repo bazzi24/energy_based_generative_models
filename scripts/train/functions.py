@@ -8,7 +8,7 @@ def train_generator(netG, netE, netH, optimizerG, optimizerH, args, g_costs):
     netH.zero_grad()
 
     # z = MALA_corrected_sampler(netG, netE, args)
-    z = torch.randn(args.batch_size, args.z_dim).cuda()
+    z = torch.randn(args.batch_size, args.z_dim)
     x_fake = netG(z)
     D_fake = netE(x_fake)
     D_fake = D_fake.mean()
@@ -16,7 +16,7 @@ def train_generator(netG, netE, netH, optimizerG, optimizerH, args, g_costs):
     ################################
     # DeepInfoMAX for MI estimation
     ################################
-    label = torch.zeros(2 * args.batch_size).cuda()
+    label = torch.zeros(2 * args.batch_size)
     label[: args.batch_size].data.fill_(1)
 
     z_bar = z[torch.randperm(args.batch_size)]
@@ -40,7 +40,7 @@ def train_energy_model(x_real, netG, netE, optimizerE, args, e_costs):
 
     # train with fake
     # z = MALA_corrected_sampler(netG, netE, args)
-    z = torch.randn(args.batch_size, args.z_dim).cuda()
+    z = torch.randn(args.batch_size, args.z_dim)
     x_fake = netG(z).detach()
     D_fake = netE(x_fake)
     D_fake = D_fake.mean()
@@ -56,7 +56,7 @@ def train_energy_model(x_real, netG, netE, optimizerE, args, e_costs):
 def train_wgan_generator(netG, netD, optimizerG, args):
     netG.zero_grad()
 
-    z = torch.randn(args.batch_size, args.z_dim).cuda()
+    z = torch.randn(args.batch_size, args.z_dim)
     x_fake = netG(z)
     D_fake = netD(x_fake)
     D_fake = D_fake.mean()
@@ -73,7 +73,7 @@ def train_wgan_discriminator(x_real, netG, netD, optimizerD, args, d_costs):
     (-D_real).backward()
 
     # train with fake
-    z = torch.randn(args.batch_size, args.z_dim).cuda()
+    z = torch.randn(args.batch_size, args.z_dim)
     x_fake = netG(z).detach()
     D_fake = netD(x_fake)
     D_fake = D_fake.mean()
