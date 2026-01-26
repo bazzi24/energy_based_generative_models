@@ -6,6 +6,9 @@ conda install pytorch=0.4.1 torchvision=0.2.1 -c pytorch
 
 pip install -r reuirements.txt
 
+## If you do not use CPU and do not use NVDIA --> Remove cuda
+```bash
 find scripts/ -name "*.py" -exec sed -i 's/\.cuda()//g' {} +
 
 find data/ -name "*.py" -exec sed -i 's/\.cuda()//g' {} +
+```
