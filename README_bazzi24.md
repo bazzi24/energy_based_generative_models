@@ -12,7 +12,7 @@ conda install pytorch=0.4.1 torchvision=0.2.1 -c pytorch
 ```
 Install dependencies and library
 ```bash
-pip install -r reuirements.txt
+pip install -r requirements.txt
 ```
 ## If you use CPU and do not use NVDIA --> Remove cuda
 ```bash
